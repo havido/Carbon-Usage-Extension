@@ -20,22 +20,24 @@ import axios from '../node_modules/axios';
 async function displayCarbonUsage(apiKey, region) {
     try {
         await axios
-            .get('https://api.co2signam.com/v1/latest', {
+            .get('https://api.electricitymap.org/v3/carbon-intensity/latest', {
                 params: {
-                    countryCode: region,
+                    zone: region,
                 },
                 headers: {
                     'auth-token': apiKey,
                 },
             })
             .then((response) => {
-                let CO2 = Math.floor(response.data.data.carbonIntensity);
+                console.log(response);
+                let CO2 = Math.floor(response.data.carbonIntensity);
                 // calculateColor(CO2);
                 loading.style.display = 'none';
                 form.style.display = 'none';
                 myregion.textContent = region;
-                usage.textContent = Math.round(response.data.data.carbonIntensity) + ' grams (grams CO2 emitted per kilowatt hour)';
-                fossilfuel.textContent = response.data.data.fossilFuelPercentage.toFixed(2) + '% (percentage of fossil fuels used to generate electricity)';
+                usage.textContent = Math.round(response.data.carbonIntensity) + ' grams (grams CO2 emitted per kilowatt hour)';
+                // fossilfuel.textContent = response.data.fossilFuelPercentage.toFixed(2) + '% (percentage of fossil fuels used to generate electricity)';
+                fossilfuel.textContent = 'temp';
                 results.style.display = 'block';
             });
     } catch (error) {
